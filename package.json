@@ -1,0 +1,38 @@
+{
+  "name": "chess-openings-graph",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Chess openings database exposed in a form of a graph.",
+  "author": "Tikhon Belousov <2tishbel@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/it1shka/chess-openings-graph#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/it1shka/chess-openings-graph.git"
+  },
+  "bugs": {
+    "url": "https://github.com/it1shka/chess-openings-graph"
+  },
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "release": "bumpp",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "bumpp": "^11.1.0",
+    "tsdown": "^0.22.5",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}
