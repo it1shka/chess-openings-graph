@@ -7,7 +7,7 @@ import type { ChessOpeningGraph } from './graph-types'
 
 const DEFAULT_OPENINGS_DIR = 'openings'
 const DEFAULT_OUTPUT_DIR = 'src'
-const DEFAULT_OUTPUT_FILENAME = 'graph.d.ts'
+const DEFAULT_OUTPUT_FILENAME = 'graph.g.ts'
 
 async function* readOpeningsFile(path: string) {
   const stream = createReadStream(path).pipe(csv({ separator: '\t' }))
