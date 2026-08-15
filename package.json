@@ -26,12 +26,16 @@
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "release": "bumpp",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "gen-graph": "tsx scripts/gen-graph.ts"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
     "bumpp": "^11.1.0",
+    "chess.js": "^1.4.0",
+    "csv-parser": "^3.2.1",
     "tsdown": "^0.22.5",
+    "tsx": "^4.23.12",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   }
