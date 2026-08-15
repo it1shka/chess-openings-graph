@@ -30,9 +30,12 @@ class OpeningsGraphExplorerNode implements IOpeningsGraphExplorerNode {
     private parent: string | undefined,
     private children: string[],
     private readonly explorer: OpeningsGraphExplorer,
-  ) { }
+  ) {}
 
-  static fromGraphNode(node: ChessOpeningNode, explorer: OpeningsGraphExplorer): OpeningsGraphExplorerNode {
+  static fromGraphNode(
+    node: ChessOpeningNode,
+    explorer: OpeningsGraphExplorer,
+  ): OpeningsGraphExplorerNode {
     return new OpeningsGraphExplorerNode(
       node.eco,
       node.name,
@@ -40,8 +43,8 @@ class OpeningsGraphExplorerNode implements IOpeningsGraphExplorerNode {
       node.fen,
       node.parent,
       node.children,
-      explorer
-    );
+      explorer,
+    )
   }
 
   getParent(): IOpeningsGraphExplorerNode | undefined {
@@ -52,7 +55,7 @@ class OpeningsGraphExplorerNode implements IOpeningsGraphExplorerNode {
   }
 
   getChildren(): IOpeningsGraphExplorerNode[] {
-    return this.children.map(childPgn => {
+    return this.children.map((childPgn) => {
       return this.explorer.getOpeningByPgn(childPgn)!
     })
   }
@@ -80,22 +83,22 @@ class OpeningsGraphExplorerNode implements IOpeningsGraphExplorerNode {
       name: this.name,
       pgn: this.pgn,
       fen: this.fen,
-      children: this.getChildren().map(child => child.asTree())
+      children: this.getChildren().map((child) => child.asTree()),
     }
   }
 }
 
 export class OpeningsGraphExplorer {
-  constructor(
-    private readonly graph: ChessOpeningGraph,
-  ) {}
+  constructor(private readonly graph: ChessOpeningGraph) {}
 
   getRawGraph(): ChessOpeningGraph {
     return this.graph
   }
 
   getOpenings(): IOpeningsGraphExplorerNode[] {
-    return Object.values(this.graph).map(node => OpeningsGraphExplorerNode.fromGraphNode(node, this))
+    return Object.values(this.graph).map((node) =>
+      OpeningsGraphExplorerNode.fromGraphNode(node, this),
+    )
   }
 
   getOpeningByPgn(pgn: string): IOpeningsGraphExplorerNode | undefined {
@@ -107,22 +110,22 @@ export class OpeningsGraphExplorer {
   }
 
   getOpeningByName(name: string): IOpeningsGraphExplorerNode | undefined {
-    return this.getOpenings().find(opening => opening.name === name)
+    return this.getOpenings().find((opening) => opening.name === name)
   }
 
   getOpeningsByEco(eco: string): IOpeningsGraphExplorerNode[] {
-    return this.getOpenings().filter(opening => opening.eco === eco)
+    return this.getOpenings().filter((opening) => opening.eco === eco)
   }
 
   getOpeningsByFen(fen: string): IOpeningsGraphExplorerNode[] {
-    return this.getOpenings().filter(opening => opening.fen === fen)
+    return this.getOpenings().filter((opening) => opening.fen === fen)
   }
 
   getRootOpenings(): IOpeningsGraphExplorerNode[] {
-    return this.getOpenings().filter(opening => opening.isRootOpening())
+    return this.getOpenings().filter((opening) => opening.isRootOpening())
   }
 
   getTerminalVariations(): IOpeningsGraphExplorerNode[] {
-    return this.getOpenings().filter(opening => opening.isTerminalVariation())
+    return this.getOpenings().filter((opening) => opening.isTerminalVariation())
   }
 }

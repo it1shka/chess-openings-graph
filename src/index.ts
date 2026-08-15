@@ -1,5 +1,5 @@
-import { OpeningsGraphExplorer } from './openings-graph-explorer'
 import { graph } from './graph.g'
+import { OpeningsGraphExplorer } from './openings-graph-explorer'
 
 function deepFreeze(obj: unknown) {
   if (typeof obj !== 'object' || obj === null) {
@@ -15,5 +15,8 @@ export const graphExplorer = (() => {
   deepFreeze(graph)
   return new OpeningsGraphExplorer(graph)
 })()
-export type { OpeningsGraphExplorerTreeNode, IOpeningsGraphExplorerNode } from './openings-graph-explorer'
+export type {
+  OpeningsGraphExplorerTreeNode,
+  IOpeningsGraphExplorerNode,
+} from './openings-graph-explorer'
 export type { ChessOpeningNode, ChessOpeningGraph } from './graph.g'

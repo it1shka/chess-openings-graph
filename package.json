@@ -1,25 +1,25 @@
 {
   "name": "chess-openings-graph",
-  "type": "module",
   "version": "0.0.1",
   "description": "Chess openings database exposed in a form of a graph.",
-  "author": "Tikhon Belousov <2tishbel@gmail.com>",
-  "license": "MIT",
   "homepage": "https://github.com/it1shka/chess-openings-graph#readme",
+  "bugs": {
+    "url": "https://github.com/it1shka/chess-openings-graph"
+  },
+  "license": "MIT",
+  "author": "Tikhon Belousov <2tishbel@gmail.com>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/it1shka/chess-openings-graph.git"
   },
-  "bugs": {
-    "url": "https://github.com/it1shka/chess-openings-graph"
-  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
   "exports": {
     ".": "./dist/index.mjs",
     "./package.json": "./package.json"
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
@@ -27,13 +27,16 @@
     "typecheck": "tsc --noEmit",
     "release": "bumpp",
     "prepublishOnly": "npm run build",
-    "gen-graph": "tsx scripts/gen-graph.ts"
+    "gen-graph": "tsx scripts/gen-graph.ts && npm run format src/*.g.ts",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
     "bumpp": "^11.1.0",
     "chess.js": "^1.4.0",
     "csv-parser": "^3.2.1",
+    "oxfmt": "^0.63.0",
     "tsdown": "^0.22.5",
     "tsx": "^4.23.12",
     "typescript": "^7.0.2",

@@ -1,4 +1,5 @@
 import { Chess } from 'chess.js'
+
 import type { ChessOpening, ChessOpeningGraph } from './graph-types'
 
 export const getChess = (() => {
@@ -25,9 +26,17 @@ export function isChessOpening(value: unknown): value is ChessOpening {
   if (typeof value !== 'object' || value === null) {
     return false
   }
-  return ('eco' in value && typeof value.eco === 'string' && value.eco.length > 0)
-    && ('name' in value && typeof value.name === 'string' && value.name.length > 0)
-    && ('pgn' in value && typeof value.pgn === 'string' && isValidPgn(value.pgn))
+  return (
+    'eco' in value &&
+    typeof value.eco === 'string' &&
+    value.eco.length > 0 &&
+    'name' in value &&
+    typeof value.name === 'string' &&
+    value.name.length > 0 &&
+    'pgn' in value &&
+    typeof value.pgn === 'string' &&
+    isValidPgn(value.pgn)
+  )
 }
 
 export interface IGraphBuilder<G> {
@@ -65,7 +74,11 @@ export class GraphBuilder implements IGraphBuilder<ChessOpeningGraph> {
   private findParent(pgn: string) {
     const chess = getChess(pgn)
     while (chess.undo() !== null) {
-      const parentPgn = chess.pgn().replace(/\[.*?\]\r?\n?/g, '').replace('*', '').trim()
+      const parentPgn = chess
+        .pgn()
+        .replace(/\[.*?\]\r?\n?/g, '')
+        .replace('*', '')
+        .trim()
       if (parentPgn in this.openings) {
         return parentPgn
       }

@@ -1,7 +1,9 @@
-import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { createReadStream } from 'node:fs'
+import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+
 import csv from 'csv-parser'
+
 import { isChessOpening, GraphBuilder } from './gen-graph-core'
 import type { ChessOpeningGraph } from './graph-types'
 
@@ -41,7 +43,7 @@ async function main() {
       for await (const opening of readOpeningsFile(filepath)) {
         graphBuilder.addOpening(opening)
       }
-    })
+    }),
   )
   graphBuilder.buildGraph()
   const graph = graphBuilder.getGraph()
