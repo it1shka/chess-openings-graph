@@ -70,6 +70,7 @@ class OpeningsGraphExplorerNode implements IOpeningsGraphExplorerNode {
 
   getPredecessors(): IOpeningsGraphExplorerNode[] {
     const predecessors = []
+    // eslint-disable-next-line no-this-alias
     let node: IOpeningsGraphExplorerNode | undefined = this
     while ((node = node.getParent()) !== undefined) {
       predecessors.push(node)

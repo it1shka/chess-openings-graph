@@ -29,7 +29,9 @@
     "prepublishOnly": "npm run build",
     "gen-graph": "tsx scripts/gen-graph.ts && npm run format src/*.g.ts",
     "format": "oxfmt",
-    "format:check": "oxfmt --check"
+    "format:check": "oxfmt --check",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
@@ -37,6 +39,8 @@
     "chess.js": "^1.4.0",
     "csv-parser": "^3.2.1",
     "oxfmt": "^0.63.0",
+    "oxlint": "^1.78.0",
+    "oxlint-tsgolint": "^7.0.2001",
     "tsdown": "^0.22.5",
     "tsx": "^4.23.12",
     "typescript": "^7.0.2",
