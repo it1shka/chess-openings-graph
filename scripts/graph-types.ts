@@ -1,13 +1,16 @@
-export type ChessOpening = {
+export interface RawOpening {
   eco: string
   name: string
   pgn: string
 }
 
-export type ChessOpeningNode = ChessOpening & {
+export type RawExtendedOpening = RawOpening & {
   fen: string
+}
+
+export type RawNode = RawExtendedOpening & {
   parent?: string
   children: string[]
 }
 
-export type ChessOpeningGraph = Record<string, ChessOpeningNode>
+export type RawGraph = Record<string, RawNode>

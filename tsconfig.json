@@ -14,7 +14,10 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "strictNullChecks": true
   },
-  "include": ["src"]
+  "include": ["src", "scripts", "./global.d.ts"]
 }

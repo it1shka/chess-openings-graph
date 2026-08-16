@@ -1,19 +1,18 @@
+import type { RawGraph, RawOpening } from './graph-types'
 import { Chess } from 'chess.js'
 
-import type { ChessOpening, ChessOpeningGraph } from './graph-types'
+const EMPTY_LENGTH = 0
 
 export const getChess = (() => {
-  let instance: Chess | undefined
-  return (pgn: string) => {
-    if (instance === undefined) {
-      instance = new Chess()
-    }
+  let instance: Chess | undefined = undefined
+  return (pgn: string): Chess => {
+    instance ??= new Chess()
     instance.loadPgn(pgn)
     return instance
   }
 })()
 
-export function isValidPgn(pgn: string) {
+export const isValidPgn = (pgn: string): boolean => {
   try {
     getChess(pgn)
     return true
@@ -22,64 +21,57 @@ export function isValidPgn(pgn: string) {
   }
 }
 
-export function isChessOpening(value: unknown): value is ChessOpening {
+export const isRawOpening = (value: unknown): value is RawOpening => {
   if (typeof value !== 'object' || value === null) {
     return false
   }
   return (
     'eco' in value &&
     typeof value.eco === 'string' &&
-    value.eco.length > 0 &&
+    value.eco.length > EMPTY_LENGTH &&
     'name' in value &&
     typeof value.name === 'string' &&
-    value.name.length > 0 &&
+    value.name.length > EMPTY_LENGTH &&
     'pgn' in value &&
     typeof value.pgn === 'string' &&
     isValidPgn(value.pgn)
   )
 }
 
-export interface IGraphBuilder<G> {
-  getGraph(): G
-  addOpening(opening: ChessOpening): void
-  buildGraph(): void
-}
+export class GraphBuilder {
+  #graph: RawGraph = {}
 
-export class GraphBuilder implements IGraphBuilder<ChessOpeningGraph> {
-  openings: ChessOpeningGraph = {}
-
-  getGraph() {
-    return this.openings
+  get graph(): RawGraph {
+    return this.#graph
   }
 
-  addOpening(opening: ChessOpening) {
-    this.openings[opening.pgn] = {
+  addOpening(opening: DeepReadonly<RawOpening>): void {
+    this.#graph[opening.pgn] = {
       ...opening,
-      fen: getChess(opening.pgn).fen(),
       children: [],
+      fen: getChess(opening.pgn).fen(),
     }
   }
 
-  buildGraph() {
-    for (const opening of Object.values(this.openings)) {
+  buildGraph(): void {
+    for (const opening of Object.values(this.#graph)) {
       const parentPgn = this.findParent(opening.pgn)
-      if (parentPgn === undefined) {
-        continue
+      if (parentPgn !== undefined) {
+        opening.parent = parentPgn
+        this.#graph[parentPgn]!.children.push(opening.pgn)
       }
-      opening.parent = parentPgn
-      this.openings[parentPgn].children.push(opening.pgn)
     }
   }
 
-  private findParent(pgn: string) {
+  private findParent(pgn: string): string | undefined {
     const chess = getChess(pgn)
     while (chess.undo() !== null) {
       const parentPgn = chess
         .pgn()
-        .replace(/\[.*?\]\r?\n?/g, '')
+        .replaceAll(/\[.*?\]\r?\n?/gu, '')
         .replace('*', '')
         .trim()
-      if (parentPgn in this.openings) {
+      if (parentPgn in this.#graph) {
         return parentPgn
       }
     }
