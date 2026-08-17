@@ -2,7 +2,6 @@ import { type GraphNode, GraphNodeImpl } from './graph-node'
 import type { RawGraph, RawNode } from './raw-graph.g'
 
 export interface Graph {
-  rawGraph: DeepReadonly<RawGraph>
   openings: GraphNode[]
   rootOpenings: GraphNode[]
   terminalVariations: GraphNode[]
@@ -17,10 +16,6 @@ export class GraphImpl implements Graph {
 
   constructor(rawGraph: DeepReadonly<RawGraph>) {
     this.#rawGraph = rawGraph
-  }
-
-  get rawGraph(): DeepReadonly<RawGraph> {
-    return this.#rawGraph
   }
 
   get openings(): GraphNode[] {
