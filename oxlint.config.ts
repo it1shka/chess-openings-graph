@@ -13,6 +13,7 @@ export default defineConfig({
   env: {
     node: true,
   },
+  ignorePatterns: ['specs/*.spec.ts'],
   options: {
     respectEslintDisableDirectives: true,
     typeAware: true,
