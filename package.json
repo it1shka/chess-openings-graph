@@ -1,6 +1,6 @@
 {
   "name": "chess-openings-graph",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Chess openings database exposed in a form of a graph.",
   "keywords": [
     "chess",
