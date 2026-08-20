@@ -75,16 +75,16 @@ describe('GraphImpl.getOpeningByPgn', () => {
   })
 })
 
-describe('GraphImpl.getOpeningByName', () => {
-  it('returns undefined when unknown name is given', ({ graph }) => {
-    const result = graph.getOpeningByPgn("King's Pawn Opening")
-    expect(result).toBeUndefined()
+describe('GraphImpl.getOpeningsByName', () => {
+  it('returns empty list when unknown name is given', ({ graph }) => {
+    const result = graph.getOpeningsByName("King's Pawn Opening")
+    expect(result).toHaveLength(0)
   })
 
-  it('returns proper opening when given known name', ({ graph }) => {
-    const result = graph.getOpeningByName('Opening 1')
-    expect(result).not.toBeUndefined()
-    expect(result!.pgn).toBe('1. a3')
+  it('returns list of openings with the specified name', ({ graph }) => {
+    const result = graph.getOpeningsByName('Opening 1')
+    expect(result).toHaveLength(1)
+    expect(result.map((opening) => opening.pgn)).toContain('1. a3')
   })
 })
 
@@ -112,6 +112,19 @@ describe('GraphImpl.getOpeningsByFen', () => {
     const result = graph.getOpeningsByFen(
       'rnbqkbnr/pp1ppppp/2p5/8/8/P7/1PPPPPPP/RNBQKBNR w KQkq - 0 2',
     )
+    expect(result).toHaveLength(1)
+    expect(result[0].name).toBe('Opening 1: Variation 2')
+  })
+})
+
+describe('GraphImpl.getOpeningsByEpd', () => {
+  it('returns empty list when given unknown epd', ({ graph }) => {
+    const result = graph.getOpeningsByEpd('rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3')
+    expect(result).toHaveLength(0)
+  })
+
+  it('returns list of openings with given epd', ({ graph }) => {
+    const result = graph.getOpeningsByEpd('rnbqkbnr/pp1ppppp/2p5/8/8/P7/1PPPPPPP/RNBQKBNR w KQkq -')
     expect(result).toHaveLength(1)
     expect(result[0].name).toBe('Opening 1: Variation 2')
   })

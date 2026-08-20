@@ -2,9 +2,18 @@
   "name": "chess-openings-graph",
   "version": "0.0.1",
   "description": "Chess openings database exposed in a form of a graph.",
+  "keywords": [
+    "chess",
+    "eco",
+    "epd",
+    "fen",
+    "graph",
+    "openings",
+    "pgn"
+  ],
   "homepage": "https://github.com/it1shka/chess-openings-graph#readme",
   "bugs": {
-    "url": "https://github.com/it1shka/chess-openings-graph"
+    "url": "https://github.com/it1shka/chess-openings-graph/issues"
   },
   "license": "MIT",
   "author": "Tikhon Belousov <2tishbel@gmail.com>",

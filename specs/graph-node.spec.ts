@@ -40,7 +40,7 @@ describe('GraphNodeImpl.name', () => {
   })
 })
 
-describe('GraphNodeImpl.name', () => {
+describe('GraphNodeImpl.pgn', () => {
   it('returns pgn of underlying raw node', ({ graphNodeA, rawNodeA }) => {
     const result = graphNodeA.pgn
     expect(result).toBe(rawNodeA.pgn)
@@ -51,6 +51,15 @@ describe('GraphNodeImpl.fen', () => {
   it('returns fen of underlying raw node', ({ graphNodeA, rawNodeA }) => {
     const result = graphNodeA.fen
     expect(result).toBe(rawNodeA.fen)
+  })
+})
+
+describe('GraphNodeImpl.epd', () => {
+  it('returns epd properly derived from fen field', ({ graphNodeA, graphNodeB }) => {
+    const resultA = graphNodeA.epd
+    expect(resultA).toBe('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -')
+    const resultB = graphNodeB.epd
+    expect(resultB).toBe('rnbqkbnr/p1pppppp/1p6/8/8/P7/1PPPPPPP/RNBQKBNR w KQkq -')
   })
 })
 

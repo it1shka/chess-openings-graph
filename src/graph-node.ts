@@ -2,8 +2,12 @@ import type { RawExtendedOpening, RawNode } from './raw-graph.g'
 import { type Graph } from './graph'
 
 const EMPTY_LENGTH = 0
+const FEN_FIELDS_SEPARATOR = ' '
+const START_EPD_FIELD = 0
+const END_EPD_FIELD = 4
 
 export type GraphNode = RawExtendedOpening & {
+  epd: string
   parent: GraphNode | undefined
   children: GraphNode[]
   isRootOpening: boolean
@@ -34,6 +38,11 @@ export class GraphNodeImpl implements GraphNode {
 
   get fen(): string {
     return this.#rawNode.fen
+  }
+
+  get epd(): string {
+    const fields = this.fen.split(FEN_FIELDS_SEPARATOR)
+    return fields.slice(START_EPD_FIELD, END_EPD_FIELD).join(FEN_FIELDS_SEPARATOR)
   }
 
   get parent(): GraphNode | undefined {

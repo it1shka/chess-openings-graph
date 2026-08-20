@@ -2,26 +2,31 @@ import { type GraphNode, GraphNodeImpl } from './graph-node'
 import type { RawGraph, RawNode } from './raw-graph.g'
 
 export interface Graph {
-  openings: GraphNode[]
+  openings: readonly GraphNode[]
   rootOpenings: GraphNode[]
   terminalVariations: GraphNode[]
   getOpeningByPgn: (pgn: string) => GraphNode | undefined
-  getOpeningByName: (name: string) => GraphNode | undefined
+  getOpeningsByName: (name: string) => GraphNode[]
   getOpeningsByEco: (eco: string) => GraphNode[]
   getOpeningsByFen: (fen: string) => GraphNode[]
+  getOpeningsByEpd: (epd: string) => GraphNode[]
 }
 
 export class GraphImpl implements Graph {
   readonly #rawGraph: DeepReadonly<RawGraph>
+  #openings: readonly GraphNode[] | undefined = undefined
 
   constructor(rawGraph: DeepReadonly<RawGraph>) {
     this.#rawGraph = rawGraph
   }
 
-  get openings(): GraphNode[] {
-    return Object.values(this.#rawGraph).map(
-      (node: DeepReadonly<RawNode>) => new GraphNodeImpl(node, this),
+  get openings(): readonly GraphNode[] {
+    this.#openings ??= Object.freeze(
+      Object.values(this.#rawGraph).map(
+        (node: DeepReadonly<RawNode>) => new GraphNodeImpl(node, this),
+      ),
     )
+    return this.#openings
   }
 
   get rootOpenings(): GraphNode[] {
@@ -40,8 +45,8 @@ export class GraphImpl implements Graph {
     return new GraphNodeImpl(node, this)
   }
 
-  getOpeningByName(name: string): GraphNode | undefined {
-    return this.openings.find((opening: DeepReadonly<GraphNode>) => opening.name === name)
+  getOpeningsByName(name: string): GraphNode[] {
+    return this.openings.filter((opening: DeepReadonly<GraphNode>) => opening.name === name)
   }
 
   getOpeningsByEco(eco: string): GraphNode[] {
@@ -50,5 +55,9 @@ export class GraphImpl implements Graph {
 
   getOpeningsByFen(fen: string): GraphNode[] {
     return this.openings.filter((opening: DeepReadonly<GraphNode>) => opening.fen === fen)
+  }
+
+  getOpeningsByEpd(epd: string): GraphNode[] {
+    return this.openings.filter((opening: DeepReadonly<GraphNode>) => opening.epd === epd)
   }
 }
