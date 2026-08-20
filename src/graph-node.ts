@@ -7,11 +7,32 @@ const START_EPD_FIELD = 0
 const END_EPD_FIELD = 4
 
 export type GraphNode = RawExtendedOpening & {
+  /**
+   * [EPD](https://en.wikipedia.org/wiki/Extended_Position_Description)
+   * notation of the opening
+   */
   epd: string
+  /**
+   * Parent opening: current opening is a variation of `parent`.
+   * If `undefined` this means that this opening is a **root opening**.
+   */
   parent: GraphNode | undefined
+  /**
+   * Children openings: variations of current opening.
+   * If `children` is an empty list this means that this opening is a **terminal variation**
+   */
   children: GraphNode[]
+  /**
+   * If `true`, then this opening has no `parent` (`parent === undefined`)
+   */
   isRootOpening: boolean
+  /**
+   * If `true`, then this opening has no `children` (`children is an empty list []`)
+   */
   isTerminalVariation: boolean
+  /**
+   * Returns the complete hierarchy of the opening's `parents`
+   */
   predecessors: GraphNode[]
 }
 
